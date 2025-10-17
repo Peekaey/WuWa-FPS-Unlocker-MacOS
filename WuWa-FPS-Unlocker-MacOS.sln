@@ -1,0 +1,16 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "WuWa-FPS-Unlocker-MacOS", "WuWa-FPS-Unlocker-MacOS\WuWa-FPS-Unlocker-MacOS.fsproj", "{3869E1DE-1652-4D7F-AB09-72B68F18C027}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3869E1DE-1652-4D7F-AB09-72B68F18C027}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3869E1DE-1652-4D7F-AB09-72B68F18C027}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3869E1DE-1652-4D7F-AB09-72B68F18C027}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3869E1DE-1652-4D7F-AB09-72B68F18C027}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
