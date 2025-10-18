@@ -7,7 +7,17 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <Compile Include="Domain\Types.fs" />
+        <Compile Include="Domain\Queries.fs" />
+        <Compile Include="Application\MessageDisplay.fs" />
+        <Compile Include="SystemHandlers\SystemHelpers.fs" />
+        <Compile Include="SystemHandlers\DatabaseHelpers.fs" />
+        <Compile Include="Application\ApplicationOrchestrator.fs" />
         <Compile Include="Program.fs"/>
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Microsoft.Data.Sqlite" Version="9.0.10" />
     </ItemGroup>
 
 </Project>
