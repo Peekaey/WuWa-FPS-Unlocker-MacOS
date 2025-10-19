@@ -19,8 +19,9 @@ module MessageHelpers
         AnsiConsole.MarkupLine("[grey37]Starting Uncapping of FPS for Wuthering Waves...[/]")
         AnsiConsole.MarkupLine("[grey37]Please note that this utility was only designed for operating on MacOS[/]")
     
-    let printBackupSuccessfulMessage() =       
-        AnsiConsole.MarkupLine("[green]Backup successfully taken of LocalStorage.db file[/]")
+    let printBackupSuccessfulMessage(backupPath: string) =       
+        AnsiConsole.MarkupLine("[green]Backup successfully taken of LocalStorage.db file. File has been saved in[/]")
+        AnsiConsole.MarkupLine($"[steelblue3]{backupPath} [/]")
         AnsiConsole.MarkupLine("[grey37]Continuing Application...[/]")
         
 

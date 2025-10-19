@@ -52,58 +52,58 @@ module WuWa_FPS_Unlocker_MacOS.SystemHandlers.SystemHelpers
                 NotRunning
 
     
-    let deleteLocalStorageFile (localStoragePath : string ) : OperationSuccess =
+    let deleteLocalStorageFile (localStoragePath : string ) : OperationResult =
         try
             if File.Exists(localStoragePath) then
                 File.Delete(localStoragePath)
-                Success
+                OperationSuccess
             else
-                Success
+                OperationSuccess
         with
         | ex ->
-            Failure $"Failed to delete LocalStorage.db file: {ex.Message}"
+            OperationFailure $"Failed to delete LocalStorage.db file: {ex.Message}"
             
     // No need to return the backup FilePath as we will assume that the backup file is always called
     // LocalStorage-backup        
-    let backupLocalStorageFile (localStoragePath: string) : OperationSuccess =
+    let backupLocalStorageFile (localStoragePath: string) : BackupResult =
         try
             let directory = Path.GetDirectoryName localStoragePath
-            let backupFileName = directory + "LocalStorage-backup.db"
-            File.Copy(localStoragePath, backupFileName)
-            Success
+            let backupFileName = directory + "/" + "LocalStorage-backup.db"
+            File.Copy(localStoragePath, backupFileName, true)
+            BackupSuccess backupFileName
         with
         | ex ->
-            Failure $"Failed to backup the LocalStorage.db file {ex.Message}"
+            BackupFailure $"Failed to backup the LocalStorage.db file {ex.Message}"
     
-    let copyLocalStorageFile (localStoragePath: string) : OperationSuccess =
+    let copyLocalStorageFile (localStoragePath: string) : OperationResult =
         try
             let directory = Path.GetDirectoryName(localStoragePath)
             let backup = directory + "LocalStorage-backup.db"
             File.Copy(backup, localStoragePath, true)
-            Success
+            OperationSuccess
         with
         | ex ->
-            Failure $"Failed to copy paste the backup of the LocalStorage.db file: {ex.Message}"
+            OperationFailure $"Failed to copy paste the backup of the LocalStorage.db file: {ex.Message}"
             
-    let restoreBackupOfLocalStorageFile (localStoragePath: string) : OperationSuccess =
+    let restoreBackupOfLocalStorageFile (localStoragePath: string) : OperationResult =
         try
             // Attempt to just copy paste the file directly
             match copyLocalStorageFile(localStoragePath) with
-            | Success ->
-                Success
-            | Failure error ->
+            | OperationSuccess ->
+                OperationSuccess
+            | OperationFailure error ->
                 // However if unable to do so, delete the file instead
                 match deleteLocalStorageFile(localStoragePath) with
-                | Failure error ->
-                    Failure $"Failed to copy paste and delete LocalStorage.db file, Please check that the file is not currently being used"
-                | Success ->
+                | OperationFailure error ->
+                    OperationFailure $"Failed to copy paste and delete LocalStorage.db file, Please check that the file is not currently being used"
+                | OperationSuccess ->
                     // If successful, attempt to copy paste the backup again
                     match copyLocalStorageFile(localStoragePath) with
-                    | Failure error ->
-                        Failure $"Delete successfull, however failed to restore LocalStorage.db file : {error}"
-                    | Success ->
-                        Success
+                    | OperationFailure error ->
+                        OperationFailure $"Delete successfull, however failed to restore LocalStorage.db file : {error}"
+                    | OperationSuccess ->
+                        OperationSuccess
         with
         | ex ->
-            Failure $"Failed to restore the backup of the LocalStorage.db file: {ex.Message}"
+            OperationFailure $"Failed to restore the backup of the LocalStorage.db file: {ex.Message}"
             

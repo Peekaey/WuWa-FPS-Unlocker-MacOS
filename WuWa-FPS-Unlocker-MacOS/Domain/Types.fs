@@ -15,10 +15,13 @@ type DatabaseResult =
     | DatabaseError of string
     | Error of string
 
-type OperationSuccess =
-    | Success
-    | Failure of string
-    
+type OperationResult =
+    | OperationSuccess
+    | OperationFailure of string
+
+type BackupResult =
+    | BackupSuccess of string
+    | BackupFailure of string
     
 type InitialiseResult =
     | InitialiseSuccess of string

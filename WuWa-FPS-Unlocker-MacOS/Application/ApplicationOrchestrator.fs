@@ -35,7 +35,7 @@ module ApplicationOrchestrator
         | DatabaseSuccess ->
             UnlockSuccess
             
-    let restoreBackup (localStoragePath: string) : OperationSuccess =
+    let restoreBackup (localStoragePath: string) : OperationResult =
         restoreBackupOfLocalStorageFile(localStoragePath)
     
     let executeApplication () : int =
@@ -47,11 +47,11 @@ module ApplicationOrchestrator
         | InitialiseSuccess localStoragePath ->
             
             match backupLocalStorageFile(localStoragePath) with
-                | Failure error ->
+                | BackupFailure error ->
                     printErrorAndExit(error)
                     1
-                | Success ->
-                    printBackupSuccessfulMessage()
+                | BackupSuccess backupPath ->
+                    printBackupSuccessfulMessage(backupPath)
                             
                     match executeUnlockFramework(localStoragePath) with
                         | UnlockFail error ->
@@ -59,11 +59,11 @@ module ApplicationOrchestrator
                             AnsiConsole.MarkupLine("[grey37]Attempting to restore backup...[/]")
                             
                             match restoreBackup(localStoragePath) with
-                            | Failure error ->
+                            | OperationFailure error ->
                                 printErrorAndExit(error)
                                 1
-                            | Success ->
-                                AnsiConsole.MarkupLine("[green]Restore of backup successfull[/]")
+                            | OperationSuccess ->
+                                AnsiConsole.MarkupLine("[green]Restore of backup successful[/]")
                                 1
                         | UnlockSuccess ->
                             AnsiConsole.MarkupLine("[green]SUCCESS: Unlock successful, FPS Cap has been set to 120 FPS[/]")
