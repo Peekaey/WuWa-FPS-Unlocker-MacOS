@@ -2,6 +2,9 @@
 
 module Queries
 
+        // Query to create a database trigger that will update the CustomFrameRate value to the equivalent of 120 FPS (3)
+        // Enum options of 0 (30 FPS), 1 (45 FPS), 2 (60 FPS), and 3 (120 FPS)
+        // Due to the reliance of needing a PlayMenuInfo and MenuData key pair, we will stick to setting the value to 120
         let getInsertCustomFramerateTriggerQuery () : string =
             """
             CREATE TRIGGER Ensure120CustomFrameRate

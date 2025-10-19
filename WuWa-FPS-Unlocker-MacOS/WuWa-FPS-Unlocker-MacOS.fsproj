@@ -9,7 +9,6 @@
     <ItemGroup>
         <Compile Include="Domain\Types.fs" />
         <Compile Include="Domain\Queries.fs" />
-        <Compile Include="Application\MessageDisplay.fs" />
         <Compile Include="SystemHandlers\SystemHelpers.fs" />
         <Compile Include="SystemHandlers\DatabaseHelpers.fs" />
         <Compile Include="Application\ApplicationOrchestrator.fs" />

@@ -5,7 +5,6 @@ module WuWa_FPS_Unlocker_MacOS.SystemHandlers.SystemHelpers
     open System
     open System.Diagnostics
     open System.IO
-    open MessageDisplay
     open Types
 
     // We follow the convention that the user installs the native Wuthering Waves application from the App Store,LocalStorage is then stored in users file path
@@ -57,18 +56,54 @@ module WuWa_FPS_Unlocker_MacOS.SystemHandlers.SystemHelpers
         try
             if File.Exists(localStoragePath) then
                 File.Delete(localStoragePath)
-                if File.Exists(localStoragePath) then
-                    Failure
-                else
-                    Success
+                Success
             else
                 Success
         with
         | ex ->
-            printDeleteLocalStorageError(ex.Message)
-            Failure
+            Failure $"Failed to delete LocalStorage.db file: {ex.Message}"
             
-    // let backupLocalStorageFile (localStoragePath: string) : OperationSuccess =
-    //     try
-    //         File.Copy()
-    //     
+    // No need to return the backup FilePath as we will assume that the backup file is always called
+    // LocalStorage-backup        
+    let backupLocalStorageFile (localStoragePath: string) : OperationSuccess =
+        try
+            let directory = Path.GetDirectoryName localStoragePath
+            let backupFileName = directory + "LocalStorage-backup.db"
+            File.Copy(localStoragePath, backupFileName)
+            Success
+        with
+        | ex ->
+            Failure $"Failed to backup the LocalStorage.db file {ex.Message}"
+    
+    let copyLocalStorageFile (localStoragePath: string) : OperationSuccess =
+        try
+            let directory = Path.GetDirectoryName(localStoragePath)
+            let backup = directory + "LocalStorage-backup.db"
+            File.Copy(backup, localStoragePath, true)
+            Success
+        with
+        | ex ->
+            Failure $"Failed to copy paste the backup of the LocalStorage.db file: {ex.Message}"
+            
+    let restoreBackupOfLocalStorageFile (localStoragePath: string) : OperationSuccess =
+        try
+            // Attempt to just copy paste the file directly
+            match copyLocalStorageFile(localStoragePath) with
+            | Success ->
+                Success
+            | Failure error ->
+                // However if unable to do so, delete the file instead
+                match deleteLocalStorageFile(localStoragePath) with
+                | Failure error ->
+                    Failure $"Failed to copy paste and delete LocalStorage.db file, Please check that the file is not currently being used"
+                | Success ->
+                    // If successful, attempt to copy paste the backup again
+                    match copyLocalStorageFile(localStoragePath) with
+                    | Failure error ->
+                        Failure $"Delete successfull, however failed to restore LocalStorage.db file : {error}"
+                    | Success ->
+                        Success
+        with
+        | ex ->
+            Failure $"Failed to restore the backup of the LocalStorage.db file: {ex.Message}"
+            

@@ -17,4 +17,13 @@ type DatabaseResult =
 
 type OperationSuccess =
     | Success
-    | Failure
+    | Failure of string
+    
+    
+type InitialiseResult =
+    | InitialiseSuccess of string
+    | InitialiseFail of string
+    
+type UnlockResult =
+    | UnlockSuccess
+    | UnlockFail of string
