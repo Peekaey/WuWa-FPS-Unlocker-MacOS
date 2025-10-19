@@ -6,32 +6,23 @@ module ApplicationOrchestrator
     open Types
     open WuWa_FPS_Unlocker_MacOS.SystemHandlers
     open WuWa_FPS_Unlocker_MacOS.SystemHandlers.SystemHelpers
-
+    open Spectre.Console
+    open MessageHelpers
     
-    let printErrorAndExit (error: string) =
-        printfn $"Error occured when running the unlock tool: {error}"
-        printfn $"Exiting the application tool..."
-    
-    let printError (error: string) =
-        printfn $"Error occured when running the unlock tool: {error}"
-
     let initialiseApplication () : InitialiseResult =
-        printfn "Starting Uncapping of FPS for Wuthering Waves..."
-        printfn "Please note that this utility was only designed for operating on MacOS and not windows"
+        printStartupMessage()
         
         match checkForWuWaRunning() with
         | Running ->
             InitialiseFail $"Wuthering waves is running, Please close the game and rerun this application"
         | NotRunning ->
-            printfn "Confirmed that Wuthering Waves is not running"
+            AnsiConsole.MarkupLine("[green]Confirmed that Wuthering Waves is not running[/]")
         
             match checkLocalStorageExists() with
             | NotFound ->
                 InitialiseFail $"LocalStorage file does not exist. Please ensure that you have run the game at least once"
             | Found localStorage ->
-                 printfn "LocalStorage.db file was found in"
-                 printfn $"{localStorage}"
-                 printfn "Continuing Application..."
+                 printFoundLocalStorage(localStorage)
                  InitialiseSuccess localStorage
 
     let executeUnlockFramework (localStoragePath: string) : UnlockResult =
@@ -60,22 +51,21 @@ module ApplicationOrchestrator
                     printErrorAndExit(error)
                     1
                 | Success ->
-                    printfn "Backup successfully taken of LocalStorage.db file"
-                    printfn "Continuing application execution"
+                    printBackupSuccessfulMessage()
                             
                     match executeUnlockFramework(localStoragePath) with
                         | UnlockFail error ->
                             printError(error)
-                            printfn("Attempting to restore backup...")
+                            AnsiConsole.MarkupLine("[grey37]Attempting to restore backup...[/]")
                             
                             match restoreBackup(localStoragePath) with
                             | Failure error ->
                                 printErrorAndExit(error)
                                 1
                             | Success ->
-                                printfn "Restore of backup successfull"
+                                AnsiConsole.MarkupLine("[green]Restore of backup successfull[/]")
                                 1
                         | UnlockSuccess ->
-                            printfn $"Unlock successful, FPS Cap has been set to 120 FPS"
+                            AnsiConsole.MarkupLine("[green]SUCCESS: Unlock successful, FPS Cap has been set to 120 FPS[/]")
                             0
                     
