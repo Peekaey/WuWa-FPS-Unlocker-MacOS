@@ -7,18 +7,21 @@ It works by altering the LocalStorage game configuration file to set the appropr
 This is a rewrite of [MacOs-WuWa-fps-unlocker](https://github.com/Peekaey/MacOs-WuWa-fps-unlocker) but in F# with the aim to learn a bit about functional programming and some improvements such as auto backup of users LocalStorage.db file as well as auto restore in the event of a failure
 
 ## Instructions
-
+1. Grab the latest copy of publish.zip from [Releases](https://github.com/Peekaey/WuWa-FPS-Unlocker-MacOS/releases)
+2. Download the publish.zip and extract its contents
+3. Execute the Wuwa-FPS-Unlocker-MacOS file from within the extracted folder
+4. See Results    
 ![Preview](./Screenshots/preview.png)
 
 ### Operation
-Success
+Success    
 ![Success](./Screenshots/Success.png)
  
- Fail
+ Fail    
  ![Fail](./Screenshots//Fail.png)
 
 
-### Misc
+## Misc
 - Running (Ensure that you are in the project folder).  ```dotnet run ```
 
 - Building for release. 
