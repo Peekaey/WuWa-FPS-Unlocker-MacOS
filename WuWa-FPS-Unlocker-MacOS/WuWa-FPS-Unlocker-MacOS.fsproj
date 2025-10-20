@@ -4,8 +4,26 @@
         <OutputType>Exe</OutputType>
         <TargetFramework>net9.0</TargetFramework>
         <RootNamespace>WuWa_FPS_Unlocker_MacOS</RootNamespace>
+        
+        <!--Publish as single file-->
+        <PublishSingleFile>true</PublishSingleFile>
+        <!--Include .NET runtime-->
+        <SelfContained>true</SelfContained>
+        <!--Target MacOS (arm64 - M series cpus) for build-->
+        <RuntimeIdentifier>osx-arm64</RuntimeIdentifier>
+        <!--Enable trimming-->
+        <PublishTrimmed>true</PublishTrimmed>
+        <!-- Trimming mode to trim executable-->
+        <TrimMode>link</TrimMode>
+        <!--Compresses contents of executable - slower startup but smaller size-->
+        <EnableCompressionInSingleFile>true</EnableCompressionInSingleFile>
+        <!--Remove culture specific formatting - results in smaller size and startup time-->
+        <InvariantGlobalization>true</InvariantGlobalization>
+        <!--Removes debugging information - results in smaller file size and runtime-->
+        <DebuggerSupport>false</DebuggerSupport>
     </PropertyGroup>
-
+    
+    
     <ItemGroup>
         <Compile Include="Domain\Types.fs" />
         <Compile Include="Domain\Queries.fs" />
@@ -13,13 +31,14 @@
         <Compile Include="SystemHandlers\SystemHelpers.fs" />
         <Compile Include="SystemHandlers\DatabaseHelpers.fs" />
         <Compile Include="Application\ApplicationOrchestrator.fs" />
-
         <Compile Include="Program.fs"/>
     </ItemGroup>
 
     <ItemGroup>
       <PackageReference Include="Microsoft.Data.Sqlite" Version="9.0.10" />
       <PackageReference Include="Spectre.Console" Version="0.52.0" />
+      <PackageReference Update="FSharp.Core" Version="9.0.303" />
     </ItemGroup>
+    
 
 </Project>

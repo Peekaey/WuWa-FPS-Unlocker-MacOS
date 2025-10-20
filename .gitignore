@@ -4,3 +4,7 @@ obj/
 riderModule.iml
 /_ReSharper.Caches/
 .idea/
+.DS_Store
+publish/
+publish.zip
+create-app-bundle.sh
